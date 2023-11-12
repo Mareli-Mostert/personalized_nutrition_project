@@ -1,0 +1,42 @@
+# Joining personalized nutrition research project data tables in MySQL
+# Author: Mareli Mostert
+# Referenced code author: Vinet Coetzee
+# GitHub reference: https://github.com/vcoetzee/how-to-files/blob/main/how-to-join-tables-mySQL.txt
+# Date executed: 5 October 2023
+
+# Create a database called nutrition
+create database nutrition;
+
+# Use created nutrition database to import ALFAH and combined SNP data csv files into MySQL
+use nutrition;
+
+# Use Table Data wizard to import data
+# 1) Open nutrition database using "schemas tab" (click on arrow next to it)
+# 2) Right-click on "Tables" and select "Table Data Import Wizard"
+# 3) Browse and select the alfah_data.csv (table1) and combined_snp_data.csv (table2) files (during seperate instances)
+# 4) Click "open" and "next"
+# 5) Select "Create new table", select nutrition database and name file
+# 6) Check if imported columns will be in correct format once imported: check column names and suggested data types ("field types")
+# 7) Select "next" to execute the data import
+
+# Check variable names in each of the tables to be combined
+describe table1;
+describe table2;
+show tables;
+
+# Create new combined table (table3) and join table1 and table2 together based on "id" (shared variable)
+# All columns from both tables will be combined
+# Left join used to join relevant info in table2 to corresponding "id" in table1
+# Note: "id" for table1 and "id2" for table2
+create table table3
+select * from table1 left join table2 on table1.id = table2.id2;
+
+# Check that data from table1 and table2 were joined correctly in table3
+describe table3;
+
+# Visualise combined table
+select * from table3;
+
+# Export combined table data into csv file for further analysis
+select * from table3 
+into outfile 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/complete_dataset.csv'

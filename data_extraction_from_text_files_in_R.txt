@@ -1,0 +1,27 @@
+# R script for extracting columns (genotype data) from large text files
+# Author: Mareli Mostert
+# Referenced code author: Vinet Coetzee
+# GitHub reference: https://github.com/vcoetzee/how-to-files/blob/main/how-to-extract-columns-from-text-R.txt
+# Date executed: 28 September 2023
+
+## Set up the working directory & load necessary packages
+### Replace "C:/Users/file_location" with the location of the large text file
+setwd("C:/Users/file_location")
+library("conflicted")
+library("tidyverse")
+
+## Read the data text file (.txt file)
+### Replace "file_name.txt" with the name of the large text file
+### Note: All title headers were deleted in the text document before the text file was read
+### Note: All hyphens ('-') were replaced with full stops ('.') before the text file was read
+df1 <- read.tsv("file_name.txt", show_col_types = FALSE)
+as_tibble(df1)
+
+## Select only the columns you want using the names of the columns
+### Note: column names, in this case, include the identifier column ('individual' column with the sample id) and the SNP names (e.g., snp1, snp2, snp3)
+### Note: only the data from 3 snps were extracted at a time
+df2 <- select(df1, column1, column2, column3)
+
+## Write the specified columns to a .csv file
+### Replace "new_file_name.csv" with the name of the created .csv file
+write.csv(df2, "new_file_name.csv", row.names = FALSE)
